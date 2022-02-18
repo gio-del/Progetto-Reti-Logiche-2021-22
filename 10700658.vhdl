@@ -70,13 +70,14 @@ end process;
 process(state_curr,is_loop, i_data, i_start, o_encoder_data, state_curr_encoder, encoded_word, count_word, count_encoder_bit, i_word, i_num)
 	variable temp : UNSIGNED(4 downto 0);
 begin
-		o_en <= '0';
-		o_we <= '0';
-		o_done <= '0';
+	o_en <= '0';
+	o_we <= '0';
+	o_done <= '0';
         o_address <= "0000000000000000";
-		o_data <= "00000000";
-		case state_curr is
-            when START_STATE => 
+	o_data <= "00000000";
+	case state_curr is
+
+            		when START_STATE => 
 								tmp_state_curr_encoder <= S00;
 								tmp_encoded_word <= "0000000000000000";
 								tmp_count_word <= "00000000";
@@ -84,13 +85,13 @@ begin
 								tmp_i_word <= "00000000";
 								tmp_i_num <= "00000000";
 								tmp_o_encoder_data <= "00";
-                                if(i_start = '1')then
-                                    state_next <= W_READ_REQUEST;
-                                else
-                                    state_next <= START_STATE;
-                                end if;
+                                				if(i_start = '1')then
+                                    					state_next <= W_READ_REQUEST;
+                               					else
+                                    					state_next <= START_STATE;
+                                				end if;
 								
-            when W_READ_REQUEST =>  
+            		when W_READ_REQUEST =>  
 								tmp_o_encoder_data <= o_encoder_data;
 								tmp_state_curr_encoder <= state_curr_encoder;
 								tmp_encoded_word <= encoded_word;
@@ -99,11 +100,11 @@ begin
 								tmp_i_word <= i_word;
 								tmp_i_num <= i_num;
 								o_en <= '1';
-                                o_we <= '0';
-                                o_address <= "0000000000000000";
-                                state_next <= W_READ;
+                                				o_we <= '0';
+                               					o_address <= "0000000000000000";
+                                				state_next <= W_READ;
 
-            when W_READ =>  
+            		when W_READ =>  
 								tmp_o_encoder_data <= o_encoder_data;
 								tmp_state_curr_encoder <= state_curr_encoder;
 								tmp_encoded_word <= encoded_word;
@@ -111,7 +112,7 @@ begin
 								tmp_count_encoder_bit <= count_encoder_bit;
 								tmp_i_word <= i_word;
 								tmp_i_num <= unsigned(i_data);
-                                state_next <= CHECK_END;
+                               					state_next <= CHECK_END;
 								
 			when CHECK_END =>	
 								tmp_o_encoder_data <= o_encoder_data;
@@ -132,7 +133,7 @@ begin
 									state_next <= WORD_READ_REQUEST;
 								end if;
 								
-            when WORD_READ_REQUEST =>  
+            	    	when WORD_READ_REQUEST =>  
 								tmp_o_encoder_data <= o_encoder_data;
 								tmp_state_curr_encoder <= state_curr_encoder;
 								tmp_encoded_word <= encoded_word;
@@ -141,11 +142,11 @@ begin
 								tmp_i_word <= i_word;
 								tmp_i_num <= i_num;
 								o_en <= '1';
-                                o_we <= '0';
-                                o_address <= "00000000" & std_logic_vector(count_word+1);
-                                state_next <= WORD_READ;
+                                				o_we <= '0';
+                                				o_address <= "00000000" & std_logic_vector(count_word+1);
+                               					state_next <= WORD_READ;
 								
-            when WORD_READ =>  
+       		   	when WORD_READ =>  
 								tmp_o_encoder_data <= o_encoder_data;
 								tmp_state_curr_encoder <= state_curr_encoder;
 								tmp_encoded_word <= "0000000000000000";
@@ -155,7 +156,7 @@ begin
 								tmp_i_num <= i_num;
 								state_next <= state_curr_encoder;
 								
-            when S00 => 		
+            		when S00 => 		
 								tmp_encoded_word <= encoded_word;
 								tmp_count_word <= count_word;
 								tmp_count_encoder_bit <= count_encoder_bit;
@@ -222,9 +223,9 @@ begin
 								tmp_i_word <= i_word;
 								tmp_i_num <= i_num;
 								temp := count_encoder_bit & '0';
-								tmp_encoded_word <= encoded_word; -- problema che devo risolvere più o meno così
+								tmp_encoded_word <= encoded_word;
 								tmp_encoded_word(to_integer(15-temp)) <= o_encoder_data(1);
-								tmp_encoded_word(to_integer(14-temp)) <= o_encoder_data(0); -- nasce problema per gli altri bit di tmp_encoded_word PROBABILMENTE!!!!
+								tmp_encoded_word(to_integer(14-temp)) <= o_encoder_data(0);
 								tmp_count_encoder_bit <= count_encoder_bit + 1;
 								state_next <= INC_COUNT_ENCODER_BIT;
 								
@@ -300,7 +301,7 @@ begin
 								tmp_i_num <= i_num;
 								state_next <= CHECK_END;
 								
-            when LOW_START_STATE => 
+            		when LOW_START_STATE => 
 								tmp_o_encoder_data <= o_encoder_data;
 								tmp_state_curr_encoder <= state_curr_encoder;
 								tmp_encoded_word <= encoded_word;
@@ -311,10 +312,11 @@ begin
 								o_done <= '1';
 								if(i_start = '0')then
 									state_next <= START_STATE;
-                                else
+                                				else
 									state_next <= LOW_START_STATE;
-                                end if;
+                               					end if;
         end case;
+
 end process;
 
 end Behavioral;
