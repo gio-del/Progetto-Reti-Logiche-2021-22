@@ -16,13 +16,14 @@ end project_reti_logiche;
 
 architecture Behavioral of project_reti_logiche is
 
-type state is ( START_STATE, W_READ_REQUEST,
+type state is ( 		START_STATE, W_READ_REQUEST,
 				W_READ, CHECK_END, WORD_READ_REQUEST,
 				WORD_READ, LOW_START_STATE, TEMP_INC_COUNT_ENCODER_BIT,
 				INC_COUNT_ENCODER_BIT, CHECK_ENCODER_END,
 				WRITE_FIRST_WORD, WRITE_SECOND_WORD,
 				TEMP_INC_COUNT_WORD, INC_COUNT_WORD,
-				S00, S01, S10, S11);
+				S00, S01, S10, S11
+	      );
 
 signal is_loop : STD_LOGIC := '0';
 signal state_next : state := START_STATE;
